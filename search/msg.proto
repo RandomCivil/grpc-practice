@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package search;
+
+//需要有go_package
+//option go_package = "gitlab.com/love_little_fat_cat/grpc-practice/search";
+option go_package = ".;search";
+
+message SearchRequest {
+  string query = 1;
+  int32 page_number = 2;
+  int32 result_per_page = 3;
+}
+
+// The greeting service definition.
+service Greeter {
+  // Sends a greeting
+  rpc SayHello (HelloRequest) returns (HelloReply) {}
+}
+
+// The request message containing the user's name.
+message HelloRequest {
+  string name = 1;
+}
+
+// The response message containing the greetings
+message HelloReply {
+  string message = 1;
+}
