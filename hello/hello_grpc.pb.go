@@ -20,6 +20,7 @@ type GreeterClient interface {
 	// Sends a greeting
 	SayHello(ctx context.Context, in *HelloRequest, opts ...grpc.CallOption) (*HelloReply, error)
 	LotsOfReplies(ctx context.Context, in *HelloRequest, opts ...grpc.CallOption) (Greeter_LotsOfRepliesClient, error)
+	LotsOfGreetings(ctx context.Context, opts ...grpc.CallOption) (Greeter_LotsOfGreetingsClient, error)
 }
 
 type greeterClient struct {
@@ -80,14 +81,54 @@ func (x *greeterLotsOfRepliesClient) Recv() (*HelloReply, error) {
 	return m, nil
 }
 
+var greeterLotsOfGreetingsStreamDesc = &grpc.StreamDesc{
+	StreamName:    "LotsOfGreetings",
+	ClientStreams: true,
+}
+
+func (c *greeterClient) LotsOfGreetings(ctx context.Context, opts ...grpc.CallOption) (Greeter_LotsOfGreetingsClient, error) {
+	stream, err := c.cc.NewStream(ctx, greeterLotsOfGreetingsStreamDesc, "/hello.Greeter/LotsOfGreetings", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &greeterLotsOfGreetingsClient{stream}
+	return x, nil
+}
+
+type Greeter_LotsOfGreetingsClient interface {
+	Send(*HelloRequest) error
+	CloseAndRecv() (*HelloReply, error)
+	grpc.ClientStream
+}
+
+type greeterLotsOfGreetingsClient struct {
+	grpc.ClientStream
+}
+
+func (x *greeterLotsOfGreetingsClient) Send(m *HelloRequest) error {
+	return x.ClientStream.SendMsg(m)
+}
+
+func (x *greeterLotsOfGreetingsClient) CloseAndRecv() (*HelloReply, error) {
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	m := new(HelloReply)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 // GreeterService is the service API for Greeter service.
 // Fields should be assigned to their respective handler implementations only before
 // RegisterGreeterService is called.  Any unassigned fields will result in the
 // handler for that method returning an Unimplemented error.
 type GreeterService struct {
 	// Sends a greeting
-	SayHello      func(context.Context, *HelloRequest) (*HelloReply, error)
-	LotsOfReplies func(*HelloRequest, Greeter_LotsOfRepliesServer) error
+	SayHello        func(context.Context, *HelloRequest) (*HelloReply, error)
+	LotsOfReplies   func(*HelloRequest, Greeter_LotsOfRepliesServer) error
+	LotsOfGreetings func(Greeter_LotsOfGreetingsServer) error
 }
 
 func (s *GreeterService) sayHello(_ interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -114,6 +155,9 @@ func (s *GreeterService) lotsOfReplies(_ interface{}, stream grpc.ServerStream) 
 	}
 	return s.LotsOfReplies(m, &greeterLotsOfRepliesServer{stream})
 }
+func (s *GreeterService) lotsOfGreetings(_ interface{}, stream grpc.ServerStream) error {
+	return s.LotsOfGreetings(&greeterLotsOfGreetingsServer{stream})
+}
 
 type Greeter_LotsOfRepliesServer interface {
 	Send(*HelloReply) error
@@ -126,6 +170,28 @@ type greeterLotsOfRepliesServer struct {
 
 func (x *greeterLotsOfRepliesServer) Send(m *HelloReply) error {
 	return x.ServerStream.SendMsg(m)
+}
+
+type Greeter_LotsOfGreetingsServer interface {
+	SendAndClose(*HelloReply) error
+	Recv() (*HelloRequest, error)
+	grpc.ServerStream
+}
+
+type greeterLotsOfGreetingsServer struct {
+	grpc.ServerStream
+}
+
+func (x *greeterLotsOfGreetingsServer) SendAndClose(m *HelloReply) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func (x *greeterLotsOfGreetingsServer) Recv() (*HelloRequest, error) {
+	m := new(HelloRequest)
+	if err := x.ServerStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
 }
 
 // RegisterGreeterService registers a service implementation with a gRPC server.
@@ -141,6 +207,11 @@ func RegisterGreeterService(s grpc.ServiceRegistrar, srv *GreeterService) {
 			return status.Errorf(codes.Unimplemented, "method LotsOfReplies not implemented")
 		}
 	}
+	if srvCopy.LotsOfGreetings == nil {
+		srvCopy.LotsOfGreetings = func(Greeter_LotsOfGreetingsServer) error {
+			return status.Errorf(codes.Unimplemented, "method LotsOfGreetings not implemented")
+		}
+	}
 	sd := grpc.ServiceDesc{
 		ServiceName: "hello.Greeter",
 		Methods: []grpc.MethodDesc{
@@ -154,6 +225,11 @@ func RegisterGreeterService(s grpc.ServiceRegistrar, srv *GreeterService) {
 				StreamName:    "LotsOfReplies",
 				Handler:       srvCopy.lotsOfReplies,
 				ServerStreams: true,
+			},
+			{
+				StreamName:    "LotsOfGreetings",
+				Handler:       srvCopy.lotsOfGreetings,
+				ClientStreams: true,
 			},
 		},
 		Metadata: "hello/hello.proto",

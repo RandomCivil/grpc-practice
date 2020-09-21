@@ -2,6 +2,8 @@ package main
 
 import (
 	"context"
+	"fmt"
+	"io"
 	"log"
 	"net"
 	"strconv"
@@ -31,13 +33,26 @@ func lotsOfReplies(in *pb.HelloRequest, stream pb.Greeter_LotsOfRepliesServer) e
 	return nil
 }
 
+func lotsOfGreetings(stream pb.Greeter_LotsOfGreetingsServer) error {
+	for {
+		req, err := stream.Recv()
+		fmt.Println("LotsOfGreetings recv", req, err)
+		if err == io.EOF {
+			return stream.SendAndClose(&pb.HelloReply{Message: "aaaa"})
+		}
+		if err != nil {
+			return err
+		}
+	}
+}
+
 func main() {
 	lis, err := net.Listen("tcp", port)
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
 	s := grpc.NewServer()
-	pb.RegisterGreeterService(s, &pb.GreeterService{SayHello: sayHello, LotsOfReplies: lotsOfReplies})
+	pb.RegisterGreeterService(s, &pb.GreeterService{SayHello: sayHello, LotsOfReplies: lotsOfReplies, LotsOfGreetings: lotsOfGreetings})
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}

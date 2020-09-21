@@ -41,4 +41,19 @@ func main() {
 		}
 		log.Println(feature)
 	}
+
+	stream1, err := c.LotsOfGreetings(ctx)
+	if err != nil {
+		log.Fatalf("%v.RecordRoute(_) = _, %v", c, err)
+	}
+	for i := 0; i < 10; i++ {
+		if err := stream1.Send(req); err != nil {
+			log.Fatalf("%v.Send() = %v", stream1, err)
+		}
+	}
+	reply, err := stream1.CloseAndRecv()
+	if err != nil {
+		log.Fatalf("%v.CloseAndRecv() got error %v, want %v", stream1, err, nil)
+	}
+	log.Printf("Route summary: %v", reply)
 }
