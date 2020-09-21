@@ -10,6 +10,7 @@ option go_package = ".;hello";
 service Greeter {
   // Sends a greeting
   rpc SayHello (HelloRequest) returns (HelloReply) {}
+  rpc LotsOfReplies(HelloRequest) returns (stream HelloReply);
 }
 
 // The request message containing the user's name.

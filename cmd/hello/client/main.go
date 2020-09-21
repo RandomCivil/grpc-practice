@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"io"
 	"log"
 	"time"
 
@@ -19,9 +20,25 @@ func main() {
 	c := pb.NewGreeterClient(conn)
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
-	r, err := c.SayHello(ctx, &pb.HelloRequest{Name: "小胖猫"})
+	req := &pb.HelloRequest{Name: "小胖猫"}
+	r, err := c.SayHello(ctx, req)
 	if err != nil {
 		log.Fatalf("could not greet: %v", err)
 	}
 	log.Printf("Greeting: %s", r.GetMessage())
+
+	stream, err := c.LotsOfReplies(ctx, req)
+	if err != nil {
+		log.Fatalf("%v.ListFeatures(_) = _, %v", c, err)
+	}
+	for {
+		feature, err := stream.Recv()
+		if err == io.EOF {
+			break
+		}
+		if err != nil {
+			log.Fatalf("%v.ListFeatures(_) = _, %v", c, err)
+		}
+		log.Println(feature)
+	}
 }
