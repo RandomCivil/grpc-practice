@@ -16,13 +16,15 @@ const (
 	port = ":8000"
 )
 
-// sayHello implements helloworld.GreeterServer.SayHello
-func sayHello(ctx context.Context, in *pb.HelloRequest) (*pb.HelloReply, error) {
+type GreeterService struct{}
+
+// sayHello implements helloworld.GreeterService.SayHello
+func (s *GreeterService) SayHello(ctx context.Context, in *pb.HelloRequest) (*pb.HelloReply, error) {
 	log.Printf("Received: %v", in.GetName())
 	return &pb.HelloReply{Message: "Hello " + in.GetName()}, nil
 }
 
-func lotsOfReplies(in *pb.HelloRequest, stream pb.Greeter_LotsOfRepliesServer) error {
+func (s *GreeterService) LotsOfReplies(in *pb.HelloRequest, stream pb.Greeter_LotsOfRepliesServer) error {
 	log.Printf("Received: %v", in.GetName())
 	for i := 0; i < 10; i++ {
 		r := &pb.HelloReply{Message: in.GetName() + strconv.Itoa(i)}
@@ -33,7 +35,7 @@ func lotsOfReplies(in *pb.HelloRequest, stream pb.Greeter_LotsOfRepliesServer) e
 	return nil
 }
 
-func lotsOfGreetings(stream pb.Greeter_LotsOfGreetingsServer) error {
+func (s *GreeterService) LotsOfGreetings(stream pb.Greeter_LotsOfGreetingsServer) error {
 	for {
 		req, err := stream.Recv()
 		fmt.Println("LotsOfGreetings recv", req, err)
@@ -52,7 +54,8 @@ func main() {
 		log.Fatalf("failed to listen: %v", err)
 	}
 	s := grpc.NewServer()
-	pb.RegisterGreeterService(s, &pb.GreeterService{SayHello: sayHello, LotsOfReplies: lotsOfReplies, LotsOfGreetings: lotsOfGreetings})
+	//pb.RegisterGreeterService(s, &pb.GreeterService{SayHello: sayHello, LotsOfReplies: lotsOfReplies, LotsOfGreetings: lotsOfGreetings})
+	pb.RegisterGreeterServer(s, &GreeterService{})
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}
