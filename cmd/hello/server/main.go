@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"io"
 	"log"
 	"net"
@@ -20,12 +19,12 @@ type GreeterService struct{}
 
 // sayHello implements helloworld.GreeterService.SayHello
 func (s *GreeterService) SayHello(ctx context.Context, in *pb.HelloRequest) (*pb.HelloReply, error) {
-	log.Printf("Received: %v", in.GetName())
+	log.Printf("SayHello Received: %v", in.GetName())
 	return &pb.HelloReply{Message: "Hello " + in.GetName()}, nil
 }
 
 func (s *GreeterService) LotsOfReplies(in *pb.HelloRequest, stream pb.Greeter_LotsOfRepliesServer) error {
-	log.Printf("Received: %v", in.GetName())
+	log.Printf("LotsOfReplies Received: %v", in.GetName())
 	for i := 0; i < 10; i++ {
 		r := &pb.HelloReply{Message: in.GetName() + strconv.Itoa(i)}
 		if err := stream.Send(r); err != nil {
@@ -38,9 +37,22 @@ func (s *GreeterService) LotsOfReplies(in *pb.HelloRequest, stream pb.Greeter_Lo
 func (s *GreeterService) LotsOfGreetings(stream pb.Greeter_LotsOfGreetingsServer) error {
 	for {
 		req, err := stream.Recv()
-		fmt.Println("LotsOfGreetings recv", req, err)
+		log.Printf("LotsOfGreetings Received: %v", req)
 		if err == io.EOF {
-			return stream.SendAndClose(&pb.HelloReply{Message: "aaaa"})
+			return stream.SendAndClose(&pb.HelloReply{Message: "client stream finished"})
+		}
+		if err != nil {
+			return err
+		}
+	}
+}
+
+func (s *GreeterService) LotsOfBoth(stream pb.Greeter_LotsOfBothServer) error {
+	for {
+		req, err := stream.Recv()
+		log.Printf("LotsOfBoth Received: %v", req)
+		if err == io.EOF {
+			return stream.Send(&pb.HelloReply{Message: "client stream finished"})
 		}
 		if err != nil {
 			return err

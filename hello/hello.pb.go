@@ -134,7 +134,7 @@ var file_hello_proto_rawDesc = []byte{
 	0x28, 0x09, 0x52, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x22, 0x26, 0x0a, 0x0a, 0x48, 0x65, 0x6c, 0x6c,
 	0x6f, 0x52, 0x65, 0x70, 0x6c, 0x79, 0x12, 0x18, 0x0a, 0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67,
 	0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65,
-	0x32, 0xb7, 0x01, 0x0a, 0x07, 0x47, 0x72, 0x65, 0x65, 0x74, 0x65, 0x72, 0x12, 0x34, 0x0a, 0x08,
+	0x32, 0xf1, 0x01, 0x0a, 0x07, 0x47, 0x72, 0x65, 0x65, 0x74, 0x65, 0x72, 0x12, 0x34, 0x0a, 0x08,
 	0x53, 0x61, 0x79, 0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x12, 0x13, 0x2e, 0x68, 0x65, 0x6c, 0x6c, 0x6f,
 	0x2e, 0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x11, 0x2e,
 	0x68, 0x65, 0x6c, 0x6c, 0x6f, 0x2e, 0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x52, 0x65, 0x70, 0x6c, 0x79,
@@ -145,8 +145,12 @@ var file_hello_proto_rawDesc = []byte{
 	0x0f, 0x4c, 0x6f, 0x74, 0x73, 0x4f, 0x66, 0x47, 0x72, 0x65, 0x65, 0x74, 0x69, 0x6e, 0x67, 0x73,
 	0x12, 0x13, 0x2e, 0x68, 0x65, 0x6c, 0x6c, 0x6f, 0x2e, 0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x52, 0x65,
 	0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x11, 0x2e, 0x68, 0x65, 0x6c, 0x6c, 0x6f, 0x2e, 0x48, 0x65,
-	0x6c, 0x6c, 0x6f, 0x52, 0x65, 0x70, 0x6c, 0x79, 0x28, 0x01, 0x42, 0x09, 0x5a, 0x07, 0x2e, 0x3b,
-	0x68, 0x65, 0x6c, 0x6c, 0x6f, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x6c, 0x6c, 0x6f, 0x52, 0x65, 0x70, 0x6c, 0x79, 0x28, 0x01, 0x12, 0x38, 0x0a, 0x0a, 0x4c, 0x6f,
+	0x74, 0x73, 0x4f, 0x66, 0x42, 0x6f, 0x74, 0x68, 0x12, 0x13, 0x2e, 0x68, 0x65, 0x6c, 0x6c, 0x6f,
+	0x2e, 0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x11, 0x2e,
+	0x68, 0x65, 0x6c, 0x6c, 0x6f, 0x2e, 0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x52, 0x65, 0x70, 0x6c, 0x79,
+	0x28, 0x01, 0x30, 0x01, 0x42, 0x09, 0x5a, 0x07, 0x2e, 0x3b, 0x68, 0x65, 0x6c, 0x6c, 0x6f, 0x62,
+	0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -170,11 +174,13 @@ var file_hello_proto_depIdxs = []int32{
 	0, // 0: hello.Greeter.SayHello:input_type -> hello.HelloRequest
 	0, // 1: hello.Greeter.LotsOfReplies:input_type -> hello.HelloRequest
 	0, // 2: hello.Greeter.LotsOfGreetings:input_type -> hello.HelloRequest
-	1, // 3: hello.Greeter.SayHello:output_type -> hello.HelloReply
-	1, // 4: hello.Greeter.LotsOfReplies:output_type -> hello.HelloReply
-	1, // 5: hello.Greeter.LotsOfGreetings:output_type -> hello.HelloReply
-	3, // [3:6] is the sub-list for method output_type
-	0, // [0:3] is the sub-list for method input_type
+	0, // 3: hello.Greeter.LotsOfBoth:input_type -> hello.HelloRequest
+	1, // 4: hello.Greeter.SayHello:output_type -> hello.HelloReply
+	1, // 5: hello.Greeter.LotsOfReplies:output_type -> hello.HelloReply
+	1, // 6: hello.Greeter.LotsOfGreetings:output_type -> hello.HelloReply
+	1, // 7: hello.Greeter.LotsOfBoth:output_type -> hello.HelloReply
+	4, // [4:8] is the sub-list for method output_type
+	0, // [0:4] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
 	0, // [0:0] is the sub-list for extension extendee
 	0, // [0:0] is the sub-list for field type_name
@@ -247,6 +253,7 @@ type GreeterClient interface {
 	SayHello(ctx context.Context, in *HelloRequest, opts ...grpc.CallOption) (*HelloReply, error)
 	LotsOfReplies(ctx context.Context, in *HelloRequest, opts ...grpc.CallOption) (Greeter_LotsOfRepliesClient, error)
 	LotsOfGreetings(ctx context.Context, opts ...grpc.CallOption) (Greeter_LotsOfGreetingsClient, error)
+	LotsOfBoth(ctx context.Context, opts ...grpc.CallOption) (Greeter_LotsOfBothClient, error)
 }
 
 type greeterClient struct {
@@ -332,12 +339,44 @@ func (x *greeterLotsOfGreetingsClient) CloseAndRecv() (*HelloReply, error) {
 	return m, nil
 }
 
+func (c *greeterClient) LotsOfBoth(ctx context.Context, opts ...grpc.CallOption) (Greeter_LotsOfBothClient, error) {
+	stream, err := c.cc.NewStream(ctx, &_Greeter_serviceDesc.Streams[2], "/hello.Greeter/LotsOfBoth", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &greeterLotsOfBothClient{stream}
+	return x, nil
+}
+
+type Greeter_LotsOfBothClient interface {
+	Send(*HelloRequest) error
+	Recv() (*HelloReply, error)
+	grpc.ClientStream
+}
+
+type greeterLotsOfBothClient struct {
+	grpc.ClientStream
+}
+
+func (x *greeterLotsOfBothClient) Send(m *HelloRequest) error {
+	return x.ClientStream.SendMsg(m)
+}
+
+func (x *greeterLotsOfBothClient) Recv() (*HelloReply, error) {
+	m := new(HelloReply)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 // GreeterServer is the server API for Greeter service.
 type GreeterServer interface {
 	// Sends a greeting
 	SayHello(context.Context, *HelloRequest) (*HelloReply, error)
 	LotsOfReplies(*HelloRequest, Greeter_LotsOfRepliesServer) error
 	LotsOfGreetings(Greeter_LotsOfGreetingsServer) error
+	LotsOfBoth(Greeter_LotsOfBothServer) error
 }
 
 // UnimplementedGreeterServer can be embedded to have forward compatible implementations.
@@ -352,6 +391,9 @@ func (*UnimplementedGreeterServer) LotsOfReplies(*HelloRequest, Greeter_LotsOfRe
 }
 func (*UnimplementedGreeterServer) LotsOfGreetings(Greeter_LotsOfGreetingsServer) error {
 	return status.Errorf(codes.Unimplemented, "method LotsOfGreetings not implemented")
+}
+func (*UnimplementedGreeterServer) LotsOfBoth(Greeter_LotsOfBothServer) error {
+	return status.Errorf(codes.Unimplemented, "method LotsOfBoth not implemented")
 }
 
 func RegisterGreeterServer(s *grpc.Server, srv GreeterServer) {
@@ -423,6 +465,32 @@ func (x *greeterLotsOfGreetingsServer) Recv() (*HelloRequest, error) {
 	return m, nil
 }
 
+func _Greeter_LotsOfBoth_Handler(srv interface{}, stream grpc.ServerStream) error {
+	return srv.(GreeterServer).LotsOfBoth(&greeterLotsOfBothServer{stream})
+}
+
+type Greeter_LotsOfBothServer interface {
+	Send(*HelloReply) error
+	Recv() (*HelloRequest, error)
+	grpc.ServerStream
+}
+
+type greeterLotsOfBothServer struct {
+	grpc.ServerStream
+}
+
+func (x *greeterLotsOfBothServer) Send(m *HelloReply) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func (x *greeterLotsOfBothServer) Recv() (*HelloRequest, error) {
+	m := new(HelloRequest)
+	if err := x.ServerStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 var _Greeter_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "hello.Greeter",
 	HandlerType: (*GreeterServer)(nil),
@@ -441,6 +509,12 @@ var _Greeter_serviceDesc = grpc.ServiceDesc{
 		{
 			StreamName:    "LotsOfGreetings",
 			Handler:       _Greeter_LotsOfGreetings_Handler,
+			ClientStreams: true,
+		},
+		{
+			StreamName:    "LotsOfBoth",
+			Handler:       _Greeter_LotsOfBoth_Handler,
+			ServerStreams: true,
 			ClientStreams: true,
 		},
 	},
