@@ -3,7 +3,7 @@ syntax = "proto3";
 package search;
 
 //需要有go_package
-//option go_package = "gitlab.com/love_little_fat_cat/grpc-practice/search";
+//option go_package = "gitlab.com/RandomCivil/grpc-practice/search";
 option go_package = ".;search";
 
 message SearchRequest {
