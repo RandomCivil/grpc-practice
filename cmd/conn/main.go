@@ -138,11 +138,5 @@ func main() {
 			return
 		}
 		go handleConn(conn.(*net.TCPConn))
-		// framer, err := Negotiate1(conn)
-		// if err != nil {
-		// 	fmt.Println(err)
-		// 	return
-		// }
-		// readFrames(framer)
 	}
 }
