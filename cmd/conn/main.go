@@ -106,7 +106,7 @@ func writeGRPCMessage(framer *http2.Framer, data []byte) error {
 	enc.WriteField(hpack.HeaderField{Name: "content-type", Value: "application/grpc"})
 
 	enc.WriteField(hpack.HeaderField{Name: "grpc-status", Value: "0"})
-	enc.WriteField(hpack.HeaderField{Name: "grpc-message", Value: ""})
+	// enc.WriteField(hpack.HeaderField{Name: "grpc-message", Value: ""})
 
 	headers := http2.HeadersFrameParam{
 		StreamID:      1,

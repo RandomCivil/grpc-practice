@@ -60,11 +60,11 @@ func (s *myServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Write the response
-	w.Header().Set("Content-Type", "application/grpc+proto")
+	w.Header().Set("Content-Type", "application/grpc")
 	w.Header().Set("Grpc-Status", fmt.Sprintf("%d", codes.OK))
 	w.Header().Add("Trailer", "Grpc-Status")
-	w.Header().Add("Trailer", "Grpc-Message")
-	w.Header().Add("Trailer", "Grpc-Status-Details-Bin")
+	// w.Header().Add("Trailer", "Grpc-Message")
+	// w.Header().Add("Trailer", "Grpc-Status-Details-Bin")
 
 	respHeader := make([]byte, 5) // todo 参考协议文档进行解析
 	respHeader[0] = 0
