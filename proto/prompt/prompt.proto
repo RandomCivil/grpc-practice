@@ -1,0 +1,23 @@
+syntax = "proto3";
+option go_package="gitlab.com/RandomCivil/dev-tools/proto/prompt";
+
+package prompt;
+
+service PromptService {
+    rpc GetBatch(GetRequest) returns (GetResponse);
+}
+
+message GetRequest {
+    repeated int32 prompt_ids = 1;
+    string prompt = 2;
+}
+
+message GetResponse {
+    repeated Prompt prompts = 1;
+}
+
+message Prompt{
+    int32 id = 1;
+    string name=2;
+    string prompt_content=3;
+}
